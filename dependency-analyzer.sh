@@ -1,6 +1,6 @@
 ############################################## README #####################################################################################################
 # Ensure that the script is executable run a  chmod +x THIS_FILE
-# when executing the script input the file that you want analyzed as the first argument, for example:
+# when executing the script input the '.ta' file that you want analyzed as the first argument, for example:
 # ./dependency-analyzer.sh Postgres_UnderstandFileDependency.raw.ta
 # you will be presented with options, select any of them. All options accept a path as input, the path must start with and include src, so for example:
 # src/backend/snowball/libstemmer/stem_ISO_8859_1_danish.c
