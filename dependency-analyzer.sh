@@ -1,7 +1,7 @@
 ############################################## README #####################################################################################################
 # Ensure that the script is executable run a  chmod +x THIS_FILE
-# when executing the script input the '.ta' file that you want analyzed as the first argument, for example:
-# ./dependency-analyzer.sh Postgres_UnderstandFileDependency.raw.ta
+# when executing the script input the file that you want analyzed as the first argument, while the second argument is the file name you can use to append info to, for example:
+# ./dependency-analyzer.sh Postgres_UnderstandFileDependency.raw.ta output_filename
 # you will be presented with options, select any of them. All options accept a path as input, the path must start with and include src, so for example:
 # src/backend/snowball/libstemmer/stem_ISO_8859_1_danish.c
 ############################################################################################################################################################
@@ -35,15 +35,41 @@ case $selection in
         echo "Input path"
         read inputPath
         printf "\n ---------------file dependencies of path--------------\n"
-        grep -i "cLinks postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}'
+        output=$(grep -i "cLinks postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}')
+        echo "$output"
         printf " ----------------------------------------------\n"
+        echo "Save output to file ok $1? [y/n]"
+        read save
+        case $save in
+                y)
+                echo "saved output to $2"
+                echo "$output" >> $2
+                echo "output saved to $2"
+                ;;
+                *)
+                echo "input not recognized"
+                ;;
+        esac
         ;;
         2)
         echo "Input path"
         read inputPath
         printf "\n ---------------file dependends on path--------------\n"
-        grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}'
+        output=$(grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}')
+        echo "$output"
         printf " ----------------------------------------------\n"
+        echo "Save output to file ok $1? [y/n]"
+        read save
+        case $save in
+                y)
+                echo "saved output to $2"
+                echo "$output" >> $2
+                echo "output saved to $2"
+                ;;
+                *)
+                echo "input not recognized"
+                ;;
+        esac
         ;;
         3)
         echo "Input path"
@@ -51,6 +77,18 @@ case $selection in
         printf "\n ---------------path dependends on directories--------------\n"
         grep -i "cLinks postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}'
         printf " ----------------------------------------------\n"
+        echo "Save output to file ok $1? [y/n]"
+        read save
+        case $save in
+                y)
+                echo "saved output to $2"
+                echo "$output" >> $2
+                echo "output saved to $2"
+                ;;
+                *)
+                echo "input not recognized"
+                ;;
+        esac
         ;;
         4)
         echo "Input path"
@@ -58,6 +96,18 @@ case $selection in
         printf "\n ---------------directories that depend on path--------------\n"
         grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}'
         printf " ----------------------------------------------\n"
+        echo "Save output to file ok $1? [y/n]"
+        read save
+        case $save in
+                y)
+                echo "saved output to $2"
+                echo "$output" >> $2
+                echo "output saved to $2"
+                ;;
+                *)
+                echo "input not recognized"
+                ;;
+        esac
         ;;
         5)
         echo "exiting..."
