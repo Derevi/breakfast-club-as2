@@ -1,0 +1,13 @@
+SUBSYSTEM:Optimizer=
+dir1/dira/file.c
+dir2
+dir3
+Parser
+
+SUBSYSTEM:Parser=
+dir4
+dir5
+dir6
+Optimizer
+
+
