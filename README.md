@@ -1,5 +1,10 @@
 # breakfast-club-as2
 
+## Links
+Video demo of how to use .sh scripts to help build containment file
+
+https://drive.google.com/file/d/1RCeUjoUkiYX9Awwg9Y8E4lxfhmw3CaQ5/view?usp=sharing
+
 ## Guidelines
 
 ## Using the Issue Tracker
