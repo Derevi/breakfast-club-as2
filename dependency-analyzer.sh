@@ -24,6 +24,8 @@ echo "[4] Get directories that depend on path"
 echo "[5] Exit"
 }
 
+
+
 print_selections
 read selection
 
@@ -38,7 +40,7 @@ case $selection in
         output=$(grep -i "cLinks postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}')
         echo "$output"
         printf " ----------------------------------------------\n"
-        echo "Save output to file ok $1? [y/n]"
+        echo "Save output to file ok $2? [y/n]"
         read save
         case $save in
                 y)
@@ -58,7 +60,7 @@ case $selection in
         output=$(grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sort | awk '$2!=$3 {print $0}')
         echo "$output"
         printf " ----------------------------------------------\n"
-        echo "Save output to file ok $1? [y/n]"
+        echo "Save output to file ok $2? [y/n]"
         read save
         case $save in
                 y)
@@ -75,9 +77,10 @@ case $selection in
         echo "Input path"
         read inputPath
         printf "\n ---------------path dependends on directories--------------\n"
-        grep -i "cLinks postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}'
+        output=$(grep -i "cLinks postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}')
+        echo "$output"
         printf " ----------------------------------------------\n"
-        echo "Save output to file ok $1? [y/n]"
+        echo "Save output to file ok $2? [y/n]"
         read save
         case $save in
                 y)
@@ -94,9 +97,10 @@ case $selection in
         echo "Input path"
         read inputPath
         printf "\n ---------------directories that depend on path--------------\n"
-        grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}'
+        output=$(grep -i "cLinks postgresql-13.4/.* postgresql-13.4/$inputPath" $1 | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}')
+        echo "$output"
         printf " ----------------------------------------------\n"
-        echo "Save output to file ok $1? [y/n]"
+        echo "Save output to file ok $2? [y/n]"
         read save
         case $save in
                 y)
