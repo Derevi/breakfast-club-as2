@@ -1,0 +1,9 @@
+cLinks postgresql-13.4/src/backend/utils/cache/partcache.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/utils/cache/plancache.c postgresql-13.4/src/backend/optimizer/path/costsize.c
+cLinks postgresql-13.4/src/backend/utils/cache/plancache.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/utils/cache/plancache.c postgresql-13.4/src/backend/optimizer/plan/setrefs.c
+cLinks postgresql-13.4/src/backend/utils/cache/relcache.c postgresql-13.4/src/backend/optimizer/prep/prepqual.c
+cLinks postgresql-13.4/src/backend/utils/cache/relcache.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/utils/cache/relcache.c postgresql-13.4/src/backend/optimizer/util/var.c
+cLinks postgresql-13.4/src/backend/utils/cache/spccache.c postgresql-13.4/src/backend/optimizer/path/costsize.c
+cLinks postgresql-13.4/src/backend/utils/cache/typcache.c postgresql-13.4/src/backend/optimizer/plan/planner.c

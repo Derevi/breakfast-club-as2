@@ -1,0 +1,6 @@
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/geqo/geqo_main.c
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/path/allpaths.c
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/path/costsize.c
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/plan/initsplan.c
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/utils/misc/guc.c postgresql-13.4/src/backend/optimizer/util/plancat.c

@@ -1,0 +1,7 @@
+cLinks postgresql-13.4/src/backend/executor/execExpr.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/executor/nodeAgg.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/executor/nodeAgg.c postgresql-13.4/src/backend/optimizer/util/tlist.c
+cLinks postgresql-13.4/src/backend/executor/nodeGather.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/executor/nodeGatherMerge.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/executor/nodeValuesscan.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/executor/nodeWindowAgg.c postgresql-13.4/src/backend/optimizer/util/clauses.c

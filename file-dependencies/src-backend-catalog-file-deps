@@ -1,0 +1,7 @@
+cLinks postgresql-13.4/src/backend/catalog/heap.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/catalog/heap.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/catalog/heap.c postgresql-13.4/src/backend/optimizer/util/var.c
+cLinks postgresql-13.4/src/backend/catalog/index.c postgresql-13.4/src/backend/optimizer/plan/planner.c
+cLinks postgresql-13.4/src/backend/catalog/partition.c postgresql-13.4/src/backend/optimizer/prep/prepqual.c
+cLinks postgresql-13.4/src/backend/catalog/partition.c postgresql-13.4/src/backend/optimizer/util/clauses.c
+cLinks postgresql-13.4/src/backend/catalog/partition.c postgresql-13.4/src/backend/optimizer/util/var.c
