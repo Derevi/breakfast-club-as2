@@ -1,7 +1,6 @@
 # the first argument is the source file where subsystem and dependencies are specified (see the example file for format)
 # the second argument is the destination containment file, it will hold both the instances and dependencies
 
-
 subsystemTag="SUBSYSTEM"
 
 #process raw text file and puts each subsystem and their components on to one line, each line is an element of subsystemArray
