@@ -2,6 +2,7 @@
 # the second argument is the destination containment file, it will hold both the instances and dependencies
 
 subsystemTag="SUBSYSTEM"
+postgresTag="postgresql-13.4"
 
 #process raw text file and puts each subsystem and their components on to one line, each line is an element of subsystemArray
 IFS=$'\n' read -r -d '' -a subsystemArray <<< $(cat $1 | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d')
@@ -16,10 +17,10 @@ print_subsystem_instance () {
 
 #prints dependencies formatted for the containment file, the first argument is the containing element, the second argument is its dependency
 print_subsystem_contain () {
-        if printf '%s\n' "${subsystems[@]}" | grep -q "$2"; then
+        if printf '%s\n' "${subsystems[@]}" | grep -q -w "$2"; then
                 echo "contain $1.ss $2.ss"
         else
-                echo "contain $1.ss $2"
+                echo "contain $1.ss $postgresTag/$2"
         fi
 }
 
