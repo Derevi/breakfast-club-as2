@@ -43,7 +43,6 @@ do
 done
 }
 
-
 #prints all instances of subsystems
 print_subsystems | grep "^\$INSTANCE" > $2
 
