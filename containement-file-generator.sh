@@ -10,24 +10,6 @@ IFS=$'\n' read -r -d '' -a subsystemArray <<< $(cat $1 | tr "\n" " " | sed "s/$s
 #process raw text file and collect all the subsystem names in to an arrau subsystems
 IFS=$'\n' read -r -d '' -a subsystems <<< $(cat $1 | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d' | sed -E "s/$subsystemTag:([[:alnum:]]+)=.*$/\1/")
 
-print_selections () {
-echo "Please make a selection by typing in the number"
-
-# takes a path as input and get all files it depends on, the output is sorted
-echo "[1] Get file dependencies"
-
-# takes a path as input and gets all files that depend on this path, the output is sorted
-echo "[2] Get files that depend on path"
-
-# Takes a path as input and gets all directories that it depends on, it is sorted and all duplicates are removed
-echo "[3] Get directory dependencies"
-
-# Takes a path as input and gets all directories that depend on that path, it is sorted and all duplicates are removed
-echo "[4] Get directories that depend on path"
-
-echo "[5] Exit"
-}
-
 #prints instances of a subsystem formatted for the containment file, the first argument is the name of the subsystem
 print_subsystem_instance () {
         echo "\$INSTANCE $1.ss cSubSystem"
