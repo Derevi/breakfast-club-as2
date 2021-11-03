@@ -44,3 +44,6 @@ src/backend/catalog
 SUBSYSTEM:Frontend=
 src/backend/libpq
 src/interfaces/libpq
+
+SUBSYSTEM:TCop=
+src/backend/tcop
