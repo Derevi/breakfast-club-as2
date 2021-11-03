@@ -12,7 +12,7 @@ outputFile=$3
 #process raw text file and puts each subsystem and their components on to one line, each line is an element of subsystemArray
 IFS=$'\n' read -r -d '' -a subsystemArray <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d')
 
-#process raw text file and collect all the subsystem names in to an array subsystems
+#process raw text file and collect all the subsystem names in to an arrau subsystems
 IFS=$'\n' read -r -d '' -a subsystems <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d' | sed -E "s/$subsystemTag:([[:alnum:]]+)=.*$/\1/")
 
 #prints instances of a subsystem formatted for the containment file, the first argument is the name of the subsystem
@@ -47,9 +47,20 @@ done
 }
 
 echo "FACT TUPLE :" > $outputFile
+
+#prints all instances of subsystems
 print_subsystems | grep "^\$INSTANCE" >> $outputFile
+
+#prints subsystem to subsystem dependencies
 print_subsystems | grep "^contain" | grep ".ss$" >> $outputFile
-print_subsystems | grep "^contain" | grep -v ".ss$" >> $outputFile
+
+#prints subsystem to directory or file dependency
+print_subsystems | grep "^contain" | grep -v ".ss$" | grep -v "\/test" >> $outputFile
+
 inclusions=$(grep "src\/" $subsystemSpec | tr "\n" " " | sed 's/ /\|/g' | rev | cut -c3- | rev)
-## Writes clinks to containment file
-grep "cLinks" $rawTaFile | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort | grep "cLinks" | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}' >> $outputFile
+
+## line to print out source file level dependency
+#grep "cLinks" $rawTaFile | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort >> $outputFile
+
+## printes out dir level dependencies
+grep "cLinks" $rawTaFile | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort | grep "cLinks" | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}' | grep -v "\/test" >> $outputFile

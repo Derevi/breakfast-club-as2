@@ -47,7 +47,6 @@ contain Logging.ss  postgresql-13.4/src/backend/replication/pgoutput
 contain Catalog.ss  postgresql-13.4/src/backend/catalog 
 contain Frontend.ss  postgresql-13.4/src/backend/libpq 
 contain Frontend.ss  postgresql-13.4/src/interfaces/libpq 
-contain Frontend.ss  postgresql-13.4/src/interfaces/libpq/test 
 cLinks postgresql-13.4/src/backend/catalog postgresql-13.4/src/backend/executor
 cLinks postgresql-13.4/src/backend/catalog postgresql-13.4/src/backend/optimizer/plan
 cLinks postgresql-13.4/src/backend/catalog postgresql-13.4/src/backend/optimizer/prep
@@ -206,4 +205,3 @@ cLinks postgresql-13.4/src/backend/storage/smgr postgresql-13.4/src/backend/stor
 cLinks postgresql-13.4/src/backend/storage/sync postgresql-13.4/src/backend/postmaster
 cLinks postgresql-13.4/src/backend/storage/sync postgresql-13.4/src/backend/storage/file
 cLinks postgresql-13.4/src/backend/storage/sync postgresql-13.4/src/backend/storage/smgr
-cLinks postgresql-13.4/src/interfaces/libpq/test postgresql-13.4/src/interfaces/libpq
