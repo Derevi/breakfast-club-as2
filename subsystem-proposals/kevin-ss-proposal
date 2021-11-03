@@ -12,7 +12,7 @@ SUBSYSTEM:Path=
 src/backend/optimizer/path
 
 SUBSYSTEM:Planner=
-src/backend/optimizer/planner
+src/backend/optimizer/plan
 
 SUBSYSTEM:Preprocessor=
 src/backend/optimizer/prep
