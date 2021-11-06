@@ -1,6 +1,6 @@
 subsystems = ['bootstrap', 'main', 'postmaster', 'interfaces', 'libpq', 'tcop', 'parser', 'rewrite', 'optimizer'
               , 'executor', 'jit', 'storage', 'contrib', 'support', 'auxiliary']
-optimizer_subsystems = ['optimizer_path']
+# optimizer_subsystems = ['optimizer_path']
 containment = []
 src_path = '$INSTANCE postgresql-13.4/src/'
 backend_path = src_path + 'backend/'
@@ -9,9 +9,9 @@ include_path = src_path + 'include/'
 for s in subsystems:
     containment.append('contain postgresql-13.4 ' + s + '.ss\n')
 
-for s in optimizer_subsystems:
-    print(s)
-    containment.append('contain optimizer ' + s + '.ss\n')
+# for s in optimizer_subsystems:
+#    print(s)
+#    containment.append('contain optimizer ' + s + '.ss\n')
 
 with open ('Postgres_UnderstandFileDependency.raw.ta', 'rt') as postgres:
     for file in postgres:
@@ -48,14 +48,17 @@ with open ('Postgres_UnderstandFileDependency.raw.ta', 'rt') as postgres:
                     containment.append("contain rewrite.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
                                        .replace(' hFile', ''))
                 elif file.find(backend_path + 'optimizer') != -1:
-                    if file.find(backend_path + 'optimizer/path'):
-                        containment.append(
-                            "contain optimizer_path.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
-                            .replace(' hFile', ''))
-                    else:
-                        containment.append(
+                    containment.append(
                             "contain optimizer.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
                             .replace(' hFile', ''))
+                    # if file.find(backend_path + 'optimizer/path'):
+                    #    containment.append(
+                    #        "contain optimizer_path.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
+                    #        .replace(' hFile', ''))
+                    #else:
+                    #    containment.append(
+                    #        "contain optimizer.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
+                    #        .replace(' hFile', ''))
 
                 elif file.find(backend_path + 'executor') != -1 or file.find(backend_path + 'partitioning') != -1:
                     containment.append("contain executor.ss " + file.replace('$INSTANCE ', '').replace(' cFile', '')
