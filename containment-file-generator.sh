@@ -1,66 +1,64 @@
-# the first argument is the raw.ta file
-# the second argument is the source file where subsystem and containments are specified
-# the third argument is the destination containment file
-# ABOUT: this generator is directory level only. Source files have been excluded. This simplifies the architecture.
-
 subsystemTag="SUBSYSTEM"
 rawTaFile=$1
 subsystemSpec=$2
 outputFile=$3
 
-
 #process raw text file and puts each subsystem and their components on to one line, each line is an element of subsystemArray
-IFS=$'\n' read -r -d '' -a subsystemArray <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d')
+IFS=$'\n' read -r -d '' -a subsystems <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | grep "$subsystemTag" | sed '/^[[:space:]]*$/d')
+
+#process raw text file and gets all directures of dirSubsystems
+IFS=$'\n' read -r -d '' -a dirSubsystemChildDirs <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed "s/$subsystemTag/\n$subsystemTag/g" | grep "$subsystemTag" | sed "s/$subsystemTag:[a-zA-Z0-9]*= //g" | sed '/^[[:space:]]*$/d')
 
 #process raw text file and collect all the subsystem names in to an arrau subsystems
-IFS=$'\n' read -r -d '' -a subsystems <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d' | sed -E "s/$subsystemTag:([[:alnum:]]+)=.*$/\1/")
+IFS=$'\n' read -r -d '' -a subsystemNames <<< $(cat $subsystemSpec | tr "\n" " " | sed "s/$subsystemTag/\n$subsystemTag/g" | sed "s/$subsystemTag/\n$subsystemTag/g" | sed '/^[[:space:]]*$/d' | sed -E "s/($subsystemTag|$subsystemTag):([[:alnum:]]+)=.*$/\2/")
 
-#prints instances of a subsystem formatted for the containment file, the first argument is the name of the subsystem
-print_subsystem_instance () {
-	echo "\$INSTANCE $1.ss cSubSystem"
-}
-
-#prints dependencies formatted for the containment file, the first argument is the containing element, the second argument is its dependency
-print_subsystem_contain () {
-	if printf '%s\n' "${subsystems[@]}" | grep -q "$2"; then
-    		echo "contain $1.ss $2.ss"
-	else
-		cat $rawTaFile | grep "\$INSTANCE" | sed 's/$INSTANCE//g' | sed 's/cFile//g' | sort | grep "$2" | sed "s/^/contain $1.ss /" | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}' 
-	fi
-}
-
-#iterates through the subsystemArray, and process and appends it to the second argument
-print_subsystems () {
-for subsystem in "${subsystemArray[@]}"
-do
-	IFS=' ' read -r -a array <<< $(sed "s/$subsystemTag://g" <<< $subsystem | sed 's/=//g' | sed 's/^[[:space:]]//')
-	for containment in "${array[@]}"
+extract_containments () {
+	parentDir=$2
+	parentDirEsc=$(echo "$2" | sed "s/\//@/g")
+	ssName=$1
+	rootDirEsc=$(echo "$1" | sed "s/\//@/g")
+	IFS=$'\n' read -r -d '' -a childDirs <<< $(grep "\$INSTANCE" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | sed 's/$INSTANCE//g' | sed 's/cFile//g' | sort | awk '!seen[$0]++' | grep "$parentDir\/" | sed 's/postgresql-13.4\///g' | sed  's/\//@/g' | sed "s/$parentDirEsc//g" | sed '/^[[:space:]]*$/d' | sed 's/^ @//' |sed -E "s/^([a-zA-Z0-9\_\-]+)@.*/\1/g" | awk '!seen[$1]++')
+#	if [[ "${#childDirs[@]}" -eq 0 ]];
+#        then
+	if printf '%s\n' "${subsystemNames[@]}" | grep -q "$parentDir"; then
+         	echo "contain $ssName.ss $parentDir.ss"
+       	else
+#		echo "$parentDir"
+                grep "\$INSTANCE" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | grep -E "$parentDir\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)"
+		grep "\$INSTANCE" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | grep -E "$parentDir\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)" | sed 's/$INSTANCE//g' | sed 's/cFile//g' | sed "s/^/contain $ssName.ss/g"
+        fi
+#	fi
+	for childDir in "${childDirs[@]}"
 	do
-		if [[ "$containment" == "${array[0]}" ]];
-		then
-			print_subsystem_instance $containment
-		else
-			print_subsystem_contain ${array[0]} $containment
-		fi
+		child=$(echo "$childDir" | sed 's/ //g')
+		echo "\$INSTANCE $child.ss cSubSystem"
+		grep "\$INSTANCE" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | grep "$parentDir\/$child"
+		grep "\$INSTANCE" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | grep "$parentDir\/$child" | sed 's/$INSTANCE//g' | sed 's/cFile//g' | sed "s/^/contain $child.ss/g"
+		echo "contain $ssName.ss $child.ss"
 	done
+}
+
+render_containment () {
+for subsystem in "${subsystems[@]}"
+do
+        IFS=' ' read -r -a array <<< $(sed "s/$subsystemTag://g" <<< $subsystem | sed 's/=//g' | sed 's/^[[:space:]]//')
+	ssName=""
+        for containment in "${array[@]}"
+        do
+                if [[ "$containment" == "${array[0]}" ]];
+                then
+			echo "\$INSTANCE $containment.ss cSubSystem"
+        		ssName=$(echo "$containment")
+                else
+			extract_containments $ssName $containment
+                fi
+        done
+
 done
 }
 
 echo "FACT TUPLE :" > $outputFile
-
-#prints all instances of subsystems
-print_subsystems | grep "^\$INSTANCE" >> $outputFile
-
-#prints subsystem to subsystem dependencies
-print_subsystems | grep "^contain" | grep ".ss$" >> $outputFile
-
-#prints subsystem to directory or file dependency
-print_subsystems | grep "^contain" | grep -v ".ss$" | grep -v "\/test" >> $outputFile
-
+render_containment >> $outputFile
 inclusions=$(grep "src\/" $subsystemSpec | tr "\n" " " | sed 's/ /\|/g' | rev | cut -c3- | rev)
+grep "cLinks" $rawTaFile | grep -v "\/contrib" | grep -v "\/test" | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort >> $outputFile
 
-## line to print out source file level dependency
-#grep "cLinks" $rawTaFile | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort >> $outputFile
-
-## printes out dir level dependencies
-grep "cLinks" $rawTaFile | awk  -v pattern="$inclusions" '$2~pattern' | awk  -v pattern="$inclusions" '$3~pattern' | sort | grep "cLinks" | sed -E -e 's/\/[a-zA-Z0-9\_\-]+\.(c|h|cpp)//g' | awk '!seen[$0]++' | sort | awk '$2!=$3 {print $0}' | grep -v "\/test" >> $outputFile

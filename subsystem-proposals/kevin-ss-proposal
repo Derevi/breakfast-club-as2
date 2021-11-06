@@ -2,23 +2,30 @@ SUBSYSTEM:Executor=
 src/backend/executor
 
 SUBSYSTEM:Optimizer=
-src/backend/optimizer
+OptimizerUtil
 Path
-Planner
-Preprocessor
-GeneticOptimizer
+Plan
+Prep
+Genetic
+Partitioning
+
+SUBSYSTEM:Partitioning=
+src/backend/partitioning
 
 SUBSYSTEM:Path=
 src/backend/optimizer/path
 
-SUBSYSTEM:Planner=
+SUBSYSTEM:Plan=
 src/backend/optimizer/plan
 
-SUBSYSTEM:Preprocessor=
+SUBSYSTEM:Prep=
 src/backend/optimizer/prep
 
-SUBSYSTEM:GeneticOptimizer=
+SUBSYSTEM:Genetic=
 src/backend/optimizer/geqo
+
+SUBSYSTEM:OptimizerUtil=
+src/backend/optimizer/util
 
 SUBSYSTEM:Parser=
 src/backend/parser
@@ -41,9 +48,46 @@ src/backend/replication
 SUBSYSTEM:Catalog=
 src/backend/catalog
 
-SUBSYSTEM:Frontend=
+SUBSYSTEM:Libpq=
 src/backend/libpq
 src/interfaces/libpq
 
 SUBSYSTEM:TCop=
 src/backend/tcop
+
+SUBSYSTEM:Access=
+src/backend/access
+
+SUBSYSTEM:Catalog=
+src/backend/catalog
+
+SUBSYSTEM:Commands=
+src/backend/commands
+
+SUBSYSTEM:Nodes=
+src/backend/nodes
+
+SUBSYSTEM:Initialization=
+src/backend/main
+Bootstrap
+
+SUBSYSTEM:Bootstrap=
+src/backend/bootstrap
+
+SUBSYSTEM:Regex=
+src/backend/regex
+
+SUBSYSTEM:Snowball=
+src/backend/snowball
+
+SUBSYSTEM:Utils=
+src/backend/utils
+
+SUBSYSTEM:Library=
+src/backend/lib
+Catalog
+Access
+Nodes
+Partitioning
+Snowball
+Regex
