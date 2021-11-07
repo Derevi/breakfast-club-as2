@@ -5,6 +5,10 @@ Video demo of how to use .sh scripts to help build containment file
 
 https://drive.google.com/file/d/1RCeUjoUkiYX9Awwg9Y8E4lxfhmw3CaQ5/view?usp=sharing
 
+
+video demo of tracking funcitonal deps for your discrepancy analysis (you need to be signed in to your york email to access)
+https://drive.google.com/file/d/11VGPiIqjVHgreqf3z7wk4s8sL76bJf8q/view?usp=sharing
+
 ## Guidelines
 
 ## Using the Issue Tracker
