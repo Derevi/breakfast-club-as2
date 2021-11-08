@@ -1,0 +1,3 @@
+
+References for function: pull_varattnos
+./src/backend/rewrite/rewriteHandler.c:1542:			pull_varattnos(expr, 1, &attrs_used);
